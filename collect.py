@@ -29,3 +29,19 @@ def save_data(data, option = "csv"):
         df.to_csv(f"/Users/joaon/OneDrive/Área de Trabalho/Lol/contents/csv/{now}.csv", index= False)
 # %%
 save_data(data)
+
+# %%
+
+print(data['version'])
+# %%
+for version in data.values():
+    print(version)
+# %%
+
+version = data.get("version")
+print(version)
+# %%
+
+for chave in data:
+    print(chave, 'corresponde a', data[chave])
+# %%
