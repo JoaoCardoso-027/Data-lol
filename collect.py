@@ -2,6 +2,7 @@
 import datetime
 import json
 import csv
+import os
 
 import requests
 import pandas as pd
@@ -14,34 +15,30 @@ resp = requests.get(url)
 
 data = resp.json()
 data
+
 # %%
 
-def save_data(data, option = "csv"):
-    
-    now = datetime.datetime.now().strftime("%Y%m%d_%H%M%S.%f")
+base = "/Users/joaon/OneDrive/Área de Trabalho/data-lol/contents/csv/"
 
-    if option == "json":
-        with open (f"/Users/joaon/OneDrive/Área de Trabalho/Lol/contents/csv/json/{now}.json", "w") as open_file:
+# %%
+
+def save_data(data):
+    
+    version = data.get("version")
+
+    json_path = os.path.join(base,"json", f"{version}.json")
+    csv_path = os.path.join(base,"json", f"{version}.csv")
+
+    os.makedirs(os.path.dirname(json_path), exist_ok=True)
+    os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+
+    with open (f"/Users/joaon/OneDrive/Área de Trabalho/data-lol/contents/csv/json/{version}.json", "w") as open_file:
             json.dump(data, open_file, indent = 4)
         
-    elif option == "csv":
-        df = pd.DataFrame(data)
-        df.to_csv(f"/Users/joaon/OneDrive/Área de Trabalho/Lol/contents/csv/{now}.csv", index= False)
+   
+    df = pd.DataFrame(data)
+    df.to_csv(f"/Users/joaon/OneDrive/Área de Trabalho/data-lol/contents/csv/{version}.csv", index= False)
 # %%
 save_data(data)
 
-# %%
-
-print(data['version'])
-# %%
-for version in data.values():
-    print(version)
-# %%
-
-version = data.get("version")
-print(version)
-# %%
-
-for chave in data:
-    print(chave, 'corresponde a', data[chave])
 # %%
